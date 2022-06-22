@@ -1,0 +1,5 @@
+services:
+  primes:
+    build:
+      context: .
+    image: primes:${version:-latest}
