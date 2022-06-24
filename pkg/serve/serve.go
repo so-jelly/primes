@@ -48,7 +48,7 @@ func primesHandler(w http.ResponseWriter, r *http.Request) {
 
 // Serve primes handler on specified port
 func Serve(portString string) {
-	http.HandleFunc("/primes", primesHandler)
+	http.HandleFunc("/", primesHandler)
 	err := http.ListenAndServe(":"+portString, nil)
 	fmt.Println(err)
 }
