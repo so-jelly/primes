@@ -16,6 +16,7 @@ func main() {
 	// If serve is specified, start http server
 	if serve.IsServeSet() {
 		serve.Serve(*port)
+		return
 	}
 	// initialize integer to use
 	pInt := *i
