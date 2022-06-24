@@ -2,7 +2,7 @@ services:
   primes:
     build:
       context: .
-    image: primes:${version:-latest}
+    image: ${REGISTRY}/primes:${VERSION}
     volumes:
       - ${PRIMES_FILE:-./input.txt}:${PRIMES_FILE:-/data/input.txt}:delegated
     ports:

@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: primes
+  name: primes
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: primes
+  template:
+    metadata:
+      labels:
+        app: primes
+    spec:
+      containers:
+        - image: ${REGISTRY}/primes:${VERSION}
+          name: primes
+          command:
+            - /app
+          args:
+            - --serve
+            - "$PRIMES_PORT"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: primes
+spec:
+  type: NodePort
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  selector:
+    app: primes
+  ports:
+    - port: $PRIMES_PORT
+      targetPort: $PRIMES_PORT
+      nodePort: 30000
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: primes
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: primes
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
