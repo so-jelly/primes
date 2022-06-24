@@ -14,7 +14,7 @@ func TestGetPrimes(t *testing.T) {
 
 	for k, v := range testVals {
 		p := &Primes{
-			PrimeInt: k,
+			Number: &k,
 		}
 		p.GetPrimes()
 		assert.Equal(t, v, p.Primes)

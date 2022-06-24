@@ -26,7 +26,7 @@ func primesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	primeInt, err := strconv.Atoi(string(reqBody))
+	Number, err := strconv.Atoi(string(reqBody))
 	if err != nil {
 		fmt.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -34,7 +34,7 @@ func primesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	p := &primes.Primes{PrimeInt: primeInt}
+	p := &primes.Primes{Number: &Number}
 	p.GetPrimes()
 	respBody, err = json.Marshal(p)
 	if err != nil {

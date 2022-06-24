@@ -1,8 +1,8 @@
 package primes
 
 type Primes struct {
-	// PrimeInt is the integer to check
-	PrimeInt int `json:"-"`
+	// Number is the integer to check
+	Number *int `json:"Number,omitempty"`
 	// Primes is the list of primes for primeInt
 	Primes []int `json:"primes"`
 }
@@ -11,12 +11,15 @@ type Primes struct {
 func (p *Primes) GetPrimes() {
 	primes := make([]int, 0)
 	// 3 is the first prime number
-	for j := 3; j <= p.PrimeInt; j++ {
+	for j := 3; j <= *p.Number; j++ {
 		if IsPrime(j) {
 			primes = append(primes, j)
 		}
 	}
+
 	p.Primes = primes
+	// set empty value so response does not include
+	p.Number = nil
 }
 
 // IsPrime checks if an integer is prime

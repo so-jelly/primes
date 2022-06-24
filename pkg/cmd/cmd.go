@@ -15,7 +15,7 @@ import (
 var DefaultFile string = "input.txt"
 
 func PrimesCmd(i int) {
-	p := &primes.Primes{PrimeInt: i}
+	p := &primes.Primes{Number: &i}
 	p.GetPrimes()
 	out, _ := json.Marshal(p)
 	fmt.Print(string(out))
