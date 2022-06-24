@@ -2,40 +2,25 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"strings"
+
+	"github.com/so-jelly/primes/pkg/cmd"
+	"github.com/so-jelly/primes/pkg/serve"
 )
 
 func main() {
-	i := flag.Int("int", 0, "integer to check for flags")
+	i := flag.Int("int", 0, "integer to check for primes")
+	f := flag.String("file", cmd.DefaultFile, "filename with integer to check for primes")
+	port := flag.String("serve", "", "Start HTTP Server to listen on /primes, integer inputs will output primes")
 	flag.Parse()
-	if *i < 1 {
-		fmt.Println("integer must be greater than one")
-	}
-	primes := getPrimes(*i)
-	fmt.Println(strings.Trim(
-		strings.Join(
-			strings.Fields(
-				fmt.Sprint(primes)), ","), "[]",
-	))
-}
 
-func getPrimes(num int) []int {
-	primes := make([]int, 0)
-	// 3 is the first prime number
-	for j := 3; j <= num; j++ {
-		if isPrime(j) {
-			primes = append(primes, j)
-		}
+	// If serve is specified, start http server
+	if serve.IsServeSet() {
+		serve.Serve(*port)
 	}
-	return primes
-}
-
-func isPrime(num int) bool {
-	for i := 2; i < num; i++ {
-		if num%i == 0 {
-			return false
-		}
+	// initialize integer to use
+	pInt := *i
+	if !cmd.IsIntSet() {
+		pInt = cmd.ReadIntFile(*f)
 	}
-	return true
+	cmd.PrimesCmd(pInt)
 }

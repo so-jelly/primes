@@ -3,3 +3,10 @@ services:
     build:
       context: .
     image: primes:${version:-latest}
+    volumes:
+      - ${PRIMES_FILE:-./input.txt}:${PRIMES_FILE:-/data/input.txt}:delegated
+    ports:
+      - 80:80
+    command:
+      - -serve
+      - "80"

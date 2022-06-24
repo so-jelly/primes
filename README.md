@@ -5,26 +5,29 @@ find primes for a given integer
 ## build 
 
 local binary `go build`
-
 as a container `docker compose build`
-
 
 ## run
 
-run directly `go run . --int 42`
+### argument input
 
-run as a container `docker compose run --int 42` 
+run with go `go run . --int 42`
+run as a container `docker compose run primes --int 42` 
 
+### file input
 
-## Requirements
+if no int argument is provided, primes will try to read the file `input.txt` different files can be provided with the `--file` argument
 
-A prime number is an integer greater than 1, divisible only by one and itself. 
+create a test file `echo 42 > ./input.txt` 
+run with go `go run . --file ./input.txt`
 
-A prime number sieve is an algorithm or program that, when given an integer, returns a list of 
-prime numbers greater than 1 and less than or equal to that integer.
+we need to mount the file via docker compose, this is done with an environment variable
+`export PRIMES_FILE=$PWD/input.txt`
+then
+`docker compose run primes --file $PRIMES_FILE`
 
-For example, a sieve, given the number 10, would return: 2, 3, 5, and 7.
+# test
 
-Given the number 21, it would return: 2, 3, 5, 7, 11, 13, 17, and 19.
+test all the subdirectories, tests have been written for the meaty part of this, more coverage could certainly be added
 
-For this exercise, write a prime number sieve in any language you want. Performance of the sieve does
+`go test -v ./...`
